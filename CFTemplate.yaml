@@ -63,6 +63,29 @@ Resources:
       OKActions:
         - !Ref SNSTopicParameter
 
+  DynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "Rider"
+          AttributeType: "S"
+        - AttributeName: "Brand"
+          AttributeType: "S"
+        - AttributeName: "Fastest_Qualifying_Lap"
+          AttributeType: "N"
+        - AttributeName: "Fastest_Race_Lap"
+          AttributeType: "N"
+      KeySchema:
+        - AttributeName: "Rider"
+          KeyType: "HASH"
+        - AttributeName: "Brand"
+          KeyType: "RANGE"
+      BillingMode: PROVISIONED
+      TableName: "Riders_Qualifying_and_Race_Times"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
 Outputs:
   BudgetId:
     Value: !Ref MyBudget
