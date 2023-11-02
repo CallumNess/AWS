@@ -31,7 +31,7 @@ print(f'alias is {alias}')
 print(f'accountId is {accountId}')
 
 response = qs_client.list_users(
-    AwsAccountId='',
+    AwsAccountId=get_account_id(),
     Namespace='default'
 )
 
