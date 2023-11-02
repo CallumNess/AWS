@@ -1,7 +1,7 @@
 import boto3
 
-profile = ''
-region = ''
+profile = 'inawisdom-auth'
+region = 'us-east-1'
 
 session = boto3.Session(profile_name=profile, region_name=region)
 client = boto3.client('quicksight')
@@ -29,9 +29,9 @@ except IndexError:
 print(f'alias is {alias}')
 print(f'accountId is {accountId}')
 
-response = qs_client.list_users(
-    AwsAccountId=get_account_id(),
+qs_user_list = qs_client.list_users(
+    AwsAccountId='443607859390',
     Namespace='default'
 )
 
-print(response)
+print(qs_user_list)
