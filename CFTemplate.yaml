@@ -1,4 +1,11 @@
 AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  SNSTopicParameter:
+    Type: String
+    Default: arn:aws:sns:eu-west-1:137522687226:TestTopic
+    Description: SNS topic for alerts
+
 Description: EC2
 Resources:
   EC2Instance:
@@ -35,6 +42,26 @@ Resources:
           Subscribers:
             - SubscriptionType: EMAIL
               Address: callumness1@live.co.uk
+
+  EBSVolumeAlarm:
+    Type: "AWS::CloudWatch::Alarm"
+    Properties:
+      AlarmName: EBS Volume Storage 90%
+      AlarmDescription: Alarm for EBS volume storage threshold
+      Namespace: AWS/EBS
+      MetricName: VolumeUsedSize
+      Dimensions:
+        - Name: VolumeId
+          Value: vol-0d712550a7758f2ce
+      ComparisonOperator: GreaterThanThreshold
+      Threshold: 90
+      Period: 300
+      EvaluationPeriods: 1
+      Statistic: SampleCount
+      AlarmActions:
+        - !Ref SNSTopicParameter
+      OKActions:
+        - !Ref SNSTopicParameter
 
 Outputs:
   BudgetId:
