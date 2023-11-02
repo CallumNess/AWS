@@ -71,10 +71,6 @@ Resources:
           AttributeType: "S"
         - AttributeName: "Brand"
           AttributeType: "S"
-        - AttributeName: "Fastest_Qualifying_Lap"
-          AttributeType: "N"
-        - AttributeName: "Fastest_Race_Lap"
-          AttributeType: "N"
       KeySchema:
         - AttributeName: "Rider"
           KeyType: "HASH"
