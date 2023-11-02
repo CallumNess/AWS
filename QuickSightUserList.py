@@ -2,7 +2,6 @@ import boto3
 
 profile = ''
 region = ''
-daysRange = 2
 
 session = boto3.Session(profile_name=profile, region_name=region)
 client = boto3.client('quicksight')
