@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: EC2
+Resources:
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-06ed60ed1369448bd
+      SecurityGroups:
+        - default
+      InstanceType: t2.micro
+      KeyName: Callum-Blog
+      BlockDeviceMappings:
+        - DeviceName: /dev/sdh
+          Ebs:
+            VolumeType: gp3
+            DeleteOnTermination: false
+            VolumeSize: 5
+
+  MyBudget:
+    Type: AWS::Budgets::Budget
+    Properties:
+      Budget:
+        BudgetName: "80% budget"
+        BudgetLimit:
+          Amount: 10
+          Unit: USD
+        TimeUnit: MONTHLY
+        BudgetType: COST
+      NotificationsWithSubscribers:
+        - Notification:
+            NotificationType: ACTUAL
+            ComparisonOperator: EQUAL_TO
+            Threshold: 80
+            ThresholdType: PERCENTAGE
+          Subscribers:
+            - SubscriptionType: EMAIL
+              Address: callumness1@live.co.uk
+
+Outputs:
+  BudgetId:
+    Value: !Ref MyBudget
