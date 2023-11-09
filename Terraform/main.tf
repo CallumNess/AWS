@@ -67,7 +67,6 @@ resource "aws_iam_role" "lambda_s3_role" {
   })
 }
 
-
 resource "aws_iam_policy" "lambda_policy" {
   name        = "lambda_s3_list_dynamodb_get"
   description = "Lambda policy for S3 List and DynamoDB Get"
@@ -96,4 +95,9 @@ resource "aws_iam_policy" "lambda_policy" {
       }
     ]
   })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_policies" {
+  role       = aws_iam_role.lambda_s3_role.name
+  policy_arn = aws_iam_policy.lambda_policy.arn
 }
