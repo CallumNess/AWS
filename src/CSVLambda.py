@@ -45,6 +45,3 @@ def dynamo_put(response):
             },
         },
     )
-
-
-read_csv_csv('item')
