@@ -1,3 +1,7 @@
+# Improvement comments
+
+# move providers into a providers.tf file
+
 terraform {
   required_providers {
     aws = {
@@ -11,9 +15,11 @@ provider "aws" {
   region  = "eu-west-3"
 }
 
+#Update resources to Input Variables for reuseability. 
 
 resource "aws_s3_bucket" "csvprocessing" {
   bucket = "csvprocessing"
+  # bucket = var.s3_bucket_name (example of variable usage)
 
   tags = {
     Name = "Bucket for CSV file processing"
