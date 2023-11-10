@@ -95,9 +95,14 @@ resource "aws_iam_policy" "lambda_policy" {
         Resource = [aws_dynamodb_table.dynamodb-table.arn]
       },
       {
-        Action   = ["ssm:Get*"]
+        Action   = ["ssm:GetParameter"]
         Effect   = "Allow"
         Resource = [aws_ssm_parameter.dynamodb.arn]
+      },
+      {
+        Action   = ["logs:CreateLogStream", "logs:PutLogEvents"],
+        Effect   = "Allow"
+        Resource = [aws_cloudwatch_log_group.lambda_logs.arn]
       }
     ]
   })
@@ -106,4 +111,8 @@ resource "aws_iam_policy" "lambda_policy" {
 resource "aws_iam_role_policy_attachment" "attach_policies" {
   role       = aws_iam_role.lambda_s3_role.name
   policy_arn = aws_iam_policy.lambda_policy.arn
+}
+
+resource "aws_cloudwatch_log_group" "lambda_logs" {
+  name = "lambda_logs"
 }

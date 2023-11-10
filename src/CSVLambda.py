@@ -1,7 +1,7 @@
+import json
 import boto3
-# import boto3.session
-import pandas
 import csv
+import os
 
 profile = 'inawisdom-sandbox-new-admin'
 region = 'eu-west-3'
@@ -11,6 +11,10 @@ session = boto3.Session(profile_name=profile, region_name=region)
 s3 = session.client('s3')
 dynamodb = session.client('dynamodb')
 sts = session.client('sts')
+ssm = session.client('ssm')
+
+parameter = ssm.get_parameter(Name=os.environ['DYNAMODB_NAME'])
+print(parameter)
 
 
 def bucket_file(bucket):
@@ -18,11 +22,6 @@ def bucket_file(bucket):
         Bucket='csvprocessing',
         Key='rider_details.csv',
     )
-    print(bucket)
-
-# def read_csv_pandas():
-#     file = pandas.read_csv('src/rider_details.csv')
-#     print(file)
 
 
 def read_csv_csv(row_index1):
@@ -45,3 +44,6 @@ def dynamo_put(response):
             },
         },
     )
+
+
+print(dynamo_put('input'))
