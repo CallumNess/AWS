@@ -11,7 +11,7 @@ terraform {
   }
 }
 provider "aws" {
-  profile = "inawisdom-sandbox-new-admin"
+  profile = "***"
   region  = "eu-west-3"
 }
 

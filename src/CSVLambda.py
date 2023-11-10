@@ -3,7 +3,7 @@ import boto3
 import csv
 import os
 
-profile = 'inawisdom-sandbox-new-admin'
+profile = '***'
 region = 'eu-west-3'
 
 session = boto3.Session(profile_name=profile, region_name=region)
