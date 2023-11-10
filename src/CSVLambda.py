@@ -14,7 +14,6 @@ sts = session.client('sts')
 ssm = session.client('ssm')
 
 parameter = ssm.get_parameter(Name=os.environ['DYNAMODB_NAME'])
-print(parameter)
 
 
 def bucket_file(bucket):
@@ -24,12 +23,12 @@ def bucket_file(bucket):
     )
 
 
-def read_csv_csv(row_index1):
+def read_csv_csv(reader):
     with open('src/rider_details.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            row1 = [row['Name']]
-            row_index1 = row1[0:1]
+            rows = row['Name']
+            print(rows)
 
 
 def dynamo_put(response):
@@ -46,4 +45,53 @@ def dynamo_put(response):
     )
 
 
-print(dynamo_put('input'))
+def dynamo_put_multiple(rows):
+    with open('src/rider_details.csv', newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            row1 = row['Name']
+            # row2 = row['Brand']
+            print(f'{row1}')
+
+    response = dynamodb.batch_write_item(
+        RequestItems={
+            'CSV_File_DB': [
+                {
+                    'PutRequest': {
+                        'Item': {
+                            'CSV': {
+                                'S': row1[0:1],
+                            },
+                            'FileName': {
+                                'S': row1[:-1],
+                            }
+                        },
+                    },
+                },
+                {
+                    'PutRequest': {
+                        'Item': {
+                            'CSV': {
+                                'S': 'Test2',
+                            },
+                            'FileName': {
+                                'S': 'Test2',
+                            }
+                        },
+                    },
+                },
+                {
+                    'PutRequest': {
+                        'Item': {
+                            'CSV': {
+                                'S': 'Test3',
+                            },
+                            'FileName': {
+                                'S': 'Test3',
+                            }
+                        },
+                    },
+                },
+            ],
+        },
+    )
