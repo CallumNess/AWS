@@ -107,7 +107,7 @@ resource "aws_iam_policy" "lambda_policy" {
         Resource = [aws_ssm_parameter.dynamodb.arn]
       },
       {
-        Action   = ["logs:CreateLogStream", "logs:PutLogEvents"],
+        Action   = ["logs:CreateLogStream", "logs:PutLogEvents", "logs:CreateLogGroup"],
         Effect   = "Allow"
         Resource = [aws_cloudwatch_log_group.lambda_logs.arn]
       }
@@ -121,7 +121,7 @@ resource "aws_iam_role_policy_attachment" "attach_policies" {
 }
 
 resource "aws_cloudwatch_log_group" "lambda_logs" {
-  name = "lambda_logs"
+  name = "/aws/lambda/CSV_Processor_Lambda"
 }
 
 resource "aws_lambda_function" "terraform_lambda_func" {

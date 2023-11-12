@@ -13,7 +13,8 @@ dynamodb = session.client('dynamodb')
 sts = session.client('sts')
 ssm = session.client('ssm')
 
-# parameter = ssm.get_parameter(Name=os.environ['DYNAMODB_NAME'])
+parameter = ssm.get_parameter(Name=os.environ['SSMParameterName'])
+print(parameter)
 
 PATH_IN_COMPUTER = '/Users/callumness/Documents/Python Personal/Github/AWS/src/rider_details.csv'
 
