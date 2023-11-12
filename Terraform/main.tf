@@ -97,7 +97,7 @@ resource "aws_iam_policy" "lambda_policy" {
         Resource = ["${aws_s3_bucket.csvprocessing.arn}/*"]
       },
       {
-        Action   = ["dynamodb:putitem"]
+        Action   = ["dynamodb:putitem", "dynamodb:BatchWriteItem"]
         Effect   = "Allow"
         Resource = [aws_dynamodb_table.dynamodb-table.arn]
       },
@@ -131,7 +131,12 @@ resource "aws_lambda_function" "terraform_lambda_func" {
   handler       = "index.lambda_handler"
   runtime       = "python3.11"
   depends_on    = [aws_iam_role_policy_attachment.attach_policies]
-
+  timeout       = 10
+  environment {
+    variables = {
+      SSMParameterName = aws_ssm_parameter.dynamodb.name
+    }
+  }
 }
 resource "aws_s3_bucket_notification" "bucket_notification" {
   bucket = aws_s3_bucket.csvprocessing.id

@@ -3,7 +3,7 @@ import boto3
 import csv
 import os
 
-profile = '***'
+profile = 'inawisdom-sandbox-new-admin'
 region = 'eu-west-3'
 
 session = boto3.Session(profile_name=profile, region_name=region)
@@ -13,25 +13,29 @@ dynamodb = session.client('dynamodb')
 sts = session.client('sts')
 ssm = session.client('ssm')
 
-parameter = ssm.get_parameter(Name=os.environ['DYNAMODB_NAME'])
+# parameter = ssm.get_parameter(Name=os.environ['DYNAMODB_NAME'])
+
+PATH_IN_COMPUTER = '/Users/callumness/Documents/Python Personal/Github/AWS/src/rider_details.csv'
 
 
-def bucket_file(bucket):
-    bucket = s3.get_object(
+def csv_file_processor():
+    s3.put_object(
+        Bucket='csvprocessing',
+        Key='rider_details.csv',
+        Body=open(PATH_IN_COMPUTER, 'rb')
+    )
+
+    s3.get_object(
         Bucket='csvprocessing',
         Key='rider_details.csv',
     )
 
+    # with open('src/rider_details.csv', newline='') as csvfile:
+    #     reader = csv.DictReader(csvfile)
+    #     for row in reader:
+    #         rows = row['Name']
+    #         print(rows)
 
-def read_csv_csv(reader):
-    with open('src/rider_details.csv', newline='') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            rows = row['Name']
-            print(rows)
-
-
-def dynamo_put(response):
     response = dynamodb.put_item(
         TableName="CSV_File_DB",
         Item={
@@ -44,14 +48,11 @@ def dynamo_put(response):
         },
     )
 
-
-def dynamo_put_multiple(rows):
     with open('src/rider_details.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             row1 = row['Name']
             # row2 = row['Brand']
-            print(f'{row1}')
 
     response = dynamodb.batch_write_item(
         RequestItems={
