@@ -11,14 +11,14 @@ terraform {
   }
 }
 provider "aws" {
-  profile = "inawisdom-sandbox-new-admin"
+  profile = "***"
   region  = "eu-west-3"
 }
 
 data "archive_file" "python_function" {
   type        = "zip"
-  source_dir  = "${path.module}/python/"
-  output_path = "${path.module}/python/python-lambda.zip"
+  source_dir  = "${path.module}/src/"
+  output_path = "${path.module}/src/python-lambda.zip"
 }
 
 #Update resources to Input Variables for reuseability. 
@@ -97,7 +97,7 @@ resource "aws_iam_policy" "lambda_policy" {
         Resource = ["${aws_s3_bucket.csvprocessing.arn}/*"]
       },
       {
-        Action   = ["dynamodb:putitem", "dynamodb:BatchWriteItem"]
+        Action   = ["dynamodb:PutItem"]
         Effect   = "Allow"
         Resource = [aws_dynamodb_table.dynamodb-table.arn]
       },
